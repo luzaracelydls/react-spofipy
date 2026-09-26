@@ -22,8 +22,6 @@ const collections = [
   },
 ];
 
-const PlaceholderRoute = () => <View style={styles.placeholderScene} />;
-
 export default function Inicio() {
   const [selectedCategory, setSelectedCategory] = React.useState('Todas');
   const [index, setIndex] = React.useState(0);
@@ -37,13 +35,6 @@ export default function Inicio() {
     ],
     []
   );
-
-  const renderScene = BottomNavigation.SceneMap({
-    home: PlaceholderRoute,
-    favorites: PlaceholderRoute,
-    search: PlaceholderRoute,
-    profile: PlaceholderRoute,
-  });
 
   const categories = ['Todas', ...data.categorias];
   const songCards = data.canciones.map((song, index) => ({
@@ -75,7 +66,7 @@ export default function Inicio() {
           </View>
 
           <View style={styles.section}>
-            <Text variant="titleLarge" style={styles.sectionTitle}>
+            <Text variant="titleLarge" style={[styles.sectionTitle, styles.sectionHeading]}>
               Categorías
             </Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipsRow}>
@@ -107,8 +98,8 @@ export default function Inicio() {
               </Button>
             </View>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.cardsRow}>
-              {songCards.map((song) => (
-                <Card key={song.nombre} mode="elevated" style={styles.songCard}>
+              {songCards.map((song, songIndex) => (
+                <Card key={`${song.nombre}-${songIndex}`} mode="elevated" style={styles.songCard}>
                   <Card.Cover source={{ uri: song.image }} style={styles.songCover} />
                   <Card.Content style={styles.songContent}>
                     <Text variant="titleMedium" style={styles.songTitle}>
@@ -124,12 +115,12 @@ export default function Inicio() {
           </View>
 
           <View style={styles.section}>
-            <Text variant="titleLarge" style={styles.sectionTitle}>
+            <Text variant="titleLarge" style={[styles.sectionTitle, styles.sectionHeading]}>
               Nueva colección
             </Text>
             <View style={styles.collectionList}>
-              {collections.map((collection) => (
-                <Card key={collection.title} mode="elevated" style={styles.collectionCard}>
+              {collections.map((collection, collectionIndex) => (
+                <Card key={`${collection.title}-${collectionIndex}`} mode="elevated" style={styles.collectionCard}>
                   <Card.Content style={styles.collectionContent}>
                     <Text variant="titleMedium" style={styles.collectionTitle}>
                       {collection.title}
@@ -147,14 +138,17 @@ export default function Inicio() {
           </View>
         </ScrollView>
 
-        <BottomNavigation
+        <BottomNavigation.Bar
           navigationState={{ index, routes }}
-          onIndexChange={setIndex}
-          renderScene={renderScene}
+          onTabPress={({ route }) => {
+            const nextIndex = routes.findIndex((item) => item.key === route.key);
+            if (nextIndex >= 0) {
+              setIndex(nextIndex);
+            }
+          }}
           activeColor="#1DB954"
           inactiveColor="#9E9E9E"
           barStyle={styles.bottomBar}
-          sceneAnimationEnabled={false}
         />
       </View>
     </SafeAreaView>
@@ -208,6 +202,8 @@ const styles = StyleSheet.create({
   sectionTitle: {
     color: '#FFFFFF',
     fontWeight: '700',
+  },
+  sectionHeading: {
     marginBottom: 14,
   },
   chipsRow: {
@@ -280,8 +276,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#121212',
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: '#2A2A2A',
-  },
-  placeholderScene: {
-    height: 0,
   },
 });
