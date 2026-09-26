@@ -151,6 +151,7 @@ export default function Inicio() {
 
         <BottomNavigation.Bar
           navigationState={{ index: selectedTabIndex, routes }}
+          onIndexChange={setSelectedTabIndex}
           onTabPress={({ route }) => {
             const nextIndex = routes.findIndex((item) => item.key === route.key);
             if (nextIndex >= 0) {
