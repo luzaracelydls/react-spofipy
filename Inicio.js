@@ -36,11 +36,15 @@ export default function Inicio() {
     []
   );
 
-  const categories = ['Todas', ...data.categorias];
-  const songCards = data.canciones.map((song, index) => ({
-    ...song,
-    image: songImages[index % songImages.length],
-  }));
+  const categories = React.useMemo(() => ['Todas', ...data.categorias], []);
+  const songCards = React.useMemo(
+    () =>
+      data.canciones.map((song, index) => ({
+        ...song,
+        image: songImages[index % songImages.length],
+      })),
+    []
+  );
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -75,6 +79,7 @@ export default function Inicio() {
                   key={category}
                   selected={selectedCategory === category}
                   onPress={() => setSelectedCategory(category)}
+                  accessibilityState={{ selected: selectedCategory === category }}
                   style={[
                     styles.chip,
                     selectedCategory === category ? styles.chipSelected : styles.chipUnselected,
@@ -146,12 +151,11 @@ export default function Inicio() {
 
         <BottomNavigation.Bar
           navigationState={{ index: selectedTabIndex, routes }}
-          onTabPress={({ route, preventDefault }) => {
+          onTabPress={({ route }) => {
             const nextIndex = routes.findIndex((item) => item.key === route.key);
             if (nextIndex >= 0) {
               setSelectedTabIndex(nextIndex);
             }
-            preventDefault();
           }}
           activeColor="#1DB954"
           inactiveColor="#9E9E9E"
