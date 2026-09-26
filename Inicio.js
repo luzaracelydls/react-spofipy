@@ -24,6 +24,7 @@ const collections = [
 
 export default function Inicio() {
   const [selectedCategory, setSelectedCategory] = React.useState('Todas');
+  const [selectedTabIndex, setSelectedTabIndex] = React.useState(0);
 
   const routes = React.useMemo(
     () => [
@@ -92,7 +93,7 @@ export default function Inicio() {
               <Text variant="titleLarge" style={styles.sectionTitle}>
                 Canciones populares
               </Text>
-              <Button compact mode="text" textColor="#1DB954">
+              <Button compact mode="text" textColor="#1DB954" onPress={() => {}}>
                 Todas
               </Button>
             </View>
@@ -127,7 +128,13 @@ export default function Inicio() {
                     <Text variant="bodyMedium" style={styles.collectionSubtitle}>
                       {collection.subtitle}
                     </Text>
-                    <Button mode="contained" buttonColor="#1DB954" textColor="#111111" style={styles.collectionAction}>
+                    <Button
+                      mode="contained"
+                      buttonColor="#1DB954"
+                      textColor="#111111"
+                      style={styles.collectionAction}
+                      onPress={() => {}}
+                    >
                       {collection.action}
                     </Button>
                   </Card.Content>
@@ -138,8 +145,14 @@ export default function Inicio() {
         </ScrollView>
 
         <BottomNavigation.Bar
-          navigationState={{ index: 0, routes }}
-          onTabPress={({ preventDefault }) => preventDefault()}
+          navigationState={{ index: selectedTabIndex, routes }}
+          onTabPress={({ route, preventDefault }) => {
+            const nextIndex = routes.findIndex((item) => item.key === route.key);
+            if (nextIndex >= 0) {
+              setSelectedTabIndex(nextIndex);
+            }
+            preventDefault();
+          }}
           activeColor="#1DB954"
           inactiveColor="#9E9E9E"
           barStyle={styles.bottomBar}
