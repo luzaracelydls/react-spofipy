@@ -24,7 +24,6 @@ const collections = [
 
 export default function Inicio() {
   const [selectedCategory, setSelectedCategory] = React.useState('Todas');
-  const [index, setIndex] = React.useState(0);
 
   const routes = React.useMemo(
     () => [
@@ -42,135 +41,108 @@ export default function Inicio() {
     image: songImages[index % songImages.length],
   }));
 
-  const renderHomeContent = () => (
-    <ScrollView
-      style={styles.content}
-      contentContainerStyle={styles.contentContainer}
-      showsVerticalScrollIndicator={false}
-    >
-      <View style={styles.header}>
-        <View>
-          <Text variant="headlineSmall" style={styles.greeting}>
-            Hola, usuario ✨
-          </Text>
-          <Text variant="bodyMedium" style={styles.subheading}>
-            Descubre algo para escuchar hoy
-          </Text>
-        </View>
-        <View style={styles.headerActions}>
-          <IconButton icon="bell-outline" iconColor="#FFFFFF" containerColor="#222222" />
-          <IconButton icon="email-outline" iconColor="#FFFFFF" containerColor="#222222" />
-        </View>
-      </View>
-
-      <View style={styles.section}>
-        <Text variant="titleLarge" style={[styles.sectionTitle, styles.sectionHeading]}>
-          Categorías
-        </Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipsRow}>
-          {categories.map((category) => (
-            <Chip
-              key={category}
-              selected={selectedCategory === category}
-              onPress={() => setSelectedCategory(category)}
-              style={[
-                styles.chip,
-                selectedCategory === category ? styles.chipSelected : styles.chipUnselected,
-              ]}
-              textStyle={selectedCategory === category ? styles.chipSelectedText : styles.chipText}
-              showSelectedOverlay={false}
-            >
-              {category}
-            </Chip>
-          ))}
-        </ScrollView>
-      </View>
-
-      <View style={styles.section}>
-        <View style={styles.sectionHeader}>
-          <Text variant="titleLarge" style={styles.sectionTitle}>
-            Canciones populares
-          </Text>
-          <Button compact mode="text" textColor="#1DB954">
-            Todas
-          </Button>
-        </View>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.cardsRow}>
-          {songCards.map((song, songIndex) => (
-            <Card key={`${song.nombre}-${songIndex}`} mode="elevated" style={styles.songCard}>
-              <Card.Cover source={{ uri: song.image }} style={styles.songCover} />
-              <Card.Content style={styles.songContent}>
-                <Text variant="titleMedium" style={styles.songTitle}>
-                  {song.nombre}
-                </Text>
-                <Text variant="bodyMedium" style={styles.songArtist}>
-                  {song.artista}
-                </Text>
-              </Card.Content>
-            </Card>
-          ))}
-        </ScrollView>
-      </View>
-
-      <View style={styles.section}>
-        <Text variant="titleLarge" style={[styles.sectionTitle, styles.sectionHeading]}>
-          Nueva colección
-        </Text>
-        <View style={styles.collectionList}>
-          {collections.map((collection, collectionIndex) => (
-            <Card key={`${collection.title}-${collectionIndex}`} mode="elevated" style={styles.collectionCard}>
-              <Card.Content style={styles.collectionContent}>
-                <Text variant="titleMedium" style={styles.collectionTitle}>
-                  {collection.title}
-                </Text>
-                <Text variant="bodyMedium" style={styles.collectionSubtitle}>
-                  {collection.subtitle}
-                </Text>
-                <Button mode="contained" buttonColor="#1DB954" textColor="#111111" style={styles.collectionAction}>
-                  {collection.action}
-                </Button>
-              </Card.Content>
-            </Card>
-          ))}
-        </View>
-      </View>
-    </ScrollView>
-  );
-
-  const renderPlaceholder = (label) => (
-    <View style={styles.placeholderScene}>
-      <Text variant="titleLarge" style={styles.placeholderText}>
-        {label}
-      </Text>
-    </View>
-  );
-
-  const renderScene = ({ route }) => {
-    switch (route.key) {
-      case 'home':
-        return renderHomeContent();
-      case 'favorites':
-        return renderPlaceholder('Favoritos');
-      case 'search':
-        return renderPlaceholder('Buscar');
-      case 'profile':
-        return renderPlaceholder('Perfil');
-      default:
-        return null;
-    }
-  };
-
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        <BottomNavigation
-          navigationState={{ index, routes }}
-          onIndexChange={setIndex}
-          renderScene={renderScene}
+        <ScrollView
+          style={styles.content}
+          contentContainerStyle={styles.contentContainer}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.header}>
+            <View>
+              <Text variant="headlineSmall" style={styles.greeting}>
+                Hola, usuario ✨
+              </Text>
+              <Text variant="bodyMedium" style={styles.subheading}>
+                Descubre algo para escuchar hoy
+              </Text>
+            </View>
+            <View style={styles.headerActions}>
+              <IconButton icon="bell-outline" iconColor="#FFFFFF" containerColor="#222222" />
+              <IconButton icon="email-outline" iconColor="#FFFFFF" containerColor="#222222" />
+            </View>
+          </View>
+
+          <View style={styles.section}>
+            <Text variant="titleLarge" style={[styles.sectionTitle, styles.sectionHeading]}>
+              Categorías
+            </Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipsRow}>
+              {categories.map((category) => (
+                <Chip
+                  key={category}
+                  selected={selectedCategory === category}
+                  onPress={() => setSelectedCategory(category)}
+                  style={[
+                    styles.chip,
+                    selectedCategory === category ? styles.chipSelected : styles.chipUnselected,
+                  ]}
+                  textStyle={selectedCategory === category ? styles.chipSelectedText : styles.chipText}
+                  showSelectedOverlay={false}
+                >
+                  {category}
+                </Chip>
+              ))}
+            </ScrollView>
+          </View>
+
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Text variant="titleLarge" style={styles.sectionTitle}>
+                Canciones populares
+              </Text>
+              <Button compact mode="text" textColor="#1DB954">
+                Todas
+              </Button>
+            </View>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.cardsRow}>
+              {songCards.map((song, songIndex) => (
+                <Card key={`${song.nombre}-${songIndex}`} mode="elevated" style={styles.songCard}>
+                  <Card.Cover source={{ uri: song.image }} style={styles.songCover} />
+                  <Card.Content style={styles.songContent}>
+                    <Text variant="titleMedium" style={styles.songTitle}>
+                      {song.nombre}
+                    </Text>
+                    <Text variant="bodyMedium" style={styles.songArtist}>
+                      {song.artista}
+                    </Text>
+                  </Card.Content>
+                </Card>
+              ))}
+            </ScrollView>
+          </View>
+
+          <View style={styles.section}>
+            <Text variant="titleLarge" style={[styles.sectionTitle, styles.sectionHeading]}>
+              Nueva colección
+            </Text>
+            <View style={styles.collectionList}>
+              {collections.map((collection, collectionIndex) => (
+                <Card key={`${collection.title}-${collectionIndex}`} mode="elevated" style={styles.collectionCard}>
+                  <Card.Content style={styles.collectionContent}>
+                    <Text variant="titleMedium" style={styles.collectionTitle}>
+                      {collection.title}
+                    </Text>
+                    <Text variant="bodyMedium" style={styles.collectionSubtitle}>
+                      {collection.subtitle}
+                    </Text>
+                    <Button mode="contained" buttonColor="#1DB954" textColor="#111111" style={styles.collectionAction}>
+                      {collection.action}
+                    </Button>
+                  </Card.Content>
+                </Card>
+              ))}
+            </View>
+          </View>
+        </ScrollView>
+
+        <BottomNavigation.Bar
+          navigationState={{ index: 0, routes }}
+          onTabPress={({ preventDefault }) => preventDefault()}
           activeColor="#1DB954"
           inactiveColor="#9E9E9E"
           barStyle={styles.bottomBar}
-          sceneAnimationEnabled={false}
         />
       </View>
     </SafeAreaView>
@@ -298,15 +270,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#121212',
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: '#2A2A2A',
-  },
-  placeholderScene: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#121212',
-  },
-  placeholderText: {
-    color: '#FFFFFF',
-    fontWeight: '700',
   },
 });
